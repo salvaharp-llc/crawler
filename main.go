@@ -17,13 +17,12 @@ func main() {
 	}
 	baseURL := args[0]
 
-	fmt.Printf("starting crawl of: %s\n", baseURL)
+	fmt.Printf("Starting crawl of: %s\n", baseURL)
 
-	htmlBody, err := getHTML(baseURL)
-	if err != nil {
-		log.Fatalf("couldn't get HTML: %v", err)
+	pages := map[string]int{}
+	crawlPage(baseURL, baseURL, pages)
+
+	for key, val := range pages {
+		fmt.Printf("- %s visited %d times\n", key, val)
 	}
-
-	fmt.Println(htmlBody)
-
 }
