@@ -35,9 +35,7 @@ func main() {
 	go cfg.crawlPage(rawBaseURL)
 	cfg.wg.Wait()
 
-	for _, pageData := range cfg.pages {
-		fmt.Println("------------------------------")
-		fmt.Printf("URL: %s\n", pageData.URL)
-		fmt.Printf("H1: %s\n", pageData.H1)
+	if err := writeCSVReport(cfg.pages, "report.csv"); err != nil {
+		fmt.Printf("Error - writeCSVReport: %v\n", err)
 	}
 }
