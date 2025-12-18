@@ -7,6 +7,7 @@ import (
 )
 
 type config struct {
+	maxPages           int
 	pages              map[string]PageData
 	baseURL            *url.URL
 	mu                 *sync.Mutex
@@ -33,17 +34,24 @@ func (cfg *config) setPageData(normalizedURL string, data PageData) {
 	cfg.pages[normalizedURL] = data
 }
 
-func configure(rawBaseURL string, maxConcurrency int) (*config, error) {
+func configure(rawBaseURL string, maxConcurrency, maxPages int) (*config, error) {
 	baseURL, err := url.Parse(rawBaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("couldn't parse base URL: %v", err)
 	}
 
 	return &config{
+		maxPages:           maxPages,
 		pages:              map[string]PageData{},
 		baseURL:            baseURL,
 		mu:                 &sync.Mutex{},
 		concurrencyControl: make(chan struct{}, maxConcurrency),
 		wg:                 &sync.WaitGroup{},
 	}, nil
+}
+
+func (cfg *config) pagesLen() int {
+	cfg.mu.Lock()
+	defer cfg.mu.Unlock()
+	return len(cfg.pages)
 }
