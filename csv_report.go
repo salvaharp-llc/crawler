@@ -29,6 +29,8 @@ func writeCSVReport(pages map[string]PageData, filename string) error {
 		"first_paragraph",
 		"outgoing_link_urls",
 		"image_urls",
+		"request_status",
+		"error",
 	}
 	if err := w.Write(header); err != nil {
 		return fmt.Errorf("couldn't write header: %v", err)
@@ -50,6 +52,8 @@ func writeCSVReport(pages map[string]PageData, filename string) error {
 			p.FirstParagraph,
 			outgoing,
 			images,
+			p.ReqStatus,
+			p.Error,
 		}
 		if err := w.Write(row); err != nil {
 			return fmt.Errorf("write row for %s: %w", p.URL, err)

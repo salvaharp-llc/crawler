@@ -55,3 +55,13 @@ func (cfg *config) pagesLen() int {
 	defer cfg.mu.Unlock()
 	return len(cfg.pages)
 }
+
+func (cfg *config) setFailedPage(normalizedURL, rawURL string, err error) {
+	cfg.mu.Lock()
+	defer cfg.mu.Unlock()
+	cfg.pages[normalizedURL] = PageData{
+		URL:       rawURL,
+		ReqStatus: "Failed",
+		Error:     err.Error(),
+	}
+}

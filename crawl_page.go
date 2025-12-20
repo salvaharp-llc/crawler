@@ -40,6 +40,7 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 
 	htmlBody, err := getHTML(rawCurrentURL)
 	if err != nil {
+		cfg.setFailedPage(normalizedURL, rawCurrentURL, err)
 		fmt.Printf("Error - getHTML: %v", err)
 		return
 	}

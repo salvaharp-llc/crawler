@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/url"
+	"strings"
 )
 
 type PageData struct {
@@ -10,6 +11,8 @@ type PageData struct {
 	FirstParagraph string
 	OutgoingLinks  []string
 	ImageURLs      []string
+	ReqStatus      string
+	Error          string
 }
 
 func extractPageData(html, pageURL string) PageData {
@@ -22,17 +25,22 @@ func extractPageData(html, pageURL string) PageData {
 			URL:            pageURL,
 			H1:             h1,
 			FirstParagraph: p,
+			ReqStatus:      "Success",
+			Error:          err.Error(),
 		}
 	}
 
+	var errors []string
 	outgoingLinks, err := getURLsFromHTML(html, baseURL)
 	if err != nil {
 		outgoingLinks = nil
+		errors = append(errors, err.Error())
 	}
 
 	imageURLs, err := getImagesFromHTML(html, baseURL)
 	if err != nil {
 		imageURLs = nil
+		errors = append(errors, err.Error())
 	}
 
 	return PageData{
@@ -41,5 +49,7 @@ func extractPageData(html, pageURL string) PageData {
 		FirstParagraph: p,
 		OutgoingLinks:  outgoingLinks,
 		ImageURLs:      imageURLs,
+		ReqStatus:      "Success",
+		Error:          strings.Join(errors, ";"),
 	}
 }
