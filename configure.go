@@ -61,7 +61,7 @@ func (cfg *config) setFailedPage(normalizedURL, rawURL string, err error) {
 	defer cfg.mu.Unlock()
 	cfg.pages[normalizedURL] = PageData{
 		URL:       rawURL,
-		ReqStatus: "Failed",
+		ReqStatus: ReqStatusFailed,
 		Error:     err.Error(),
 	}
 }

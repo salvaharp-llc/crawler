@@ -52,7 +52,7 @@ func writeCSVReport(pages map[string]PageData, filename string) error {
 			p.FirstParagraph,
 			outgoing,
 			images,
-			p.ReqStatus,
+			string(p.ReqStatus),
 			p.Error,
 		}
 		if err := w.Write(row); err != nil {

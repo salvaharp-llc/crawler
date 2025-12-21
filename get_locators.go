@@ -26,7 +26,7 @@ func getLocatorsFromHTML(html, element, attribute string, baseURL *url.URL) ([]s
 	selector := fmt.Sprintf("%s[%s]", element, attribute)
 	doc.Find(selector).Each(func(_ int, s *goquery.Selection) {
 		att, _ := s.Attr(attribute)
-		if strings.TrimSpace(att) == "" {
+		if att = strings.TrimSpace(att); att == "" {
 			return
 		}
 
