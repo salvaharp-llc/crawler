@@ -22,7 +22,7 @@ func (cfg *config) crawlPage(rawCurrentURL string) {
 		return
 	}
 
-	if cfg.baseURL.Hostname() != currentURL.Hostname() {
+	if !cfg.isInternalLink(currentURL) {
 		return
 	}
 
